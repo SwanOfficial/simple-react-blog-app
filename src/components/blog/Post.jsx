@@ -1,7 +1,29 @@
 
 import Card from '../ui/Card'
 import classes from './Post.module.css'
+import { useContext } from 'react'
+import { FavoriteContext } from '../../store/favoriteContex'
+
 function Post(props) {
+  const favoriteContext = useContext(FavoriteContext)
+  const favorite = favoriteContext.isFavorite(props.id)
+
+  function favoriteHandeler(params) {
+    
+
+    if(favorite){
+      favoriteContext.removeFavorite(props.id)
+    }else{
+      favoriteContext.addFavorite({
+        id : props.id,
+        title : props.title,
+        author : props.author,
+        image : props.image,
+        body : props.body
+      })
+    }
+    
+  }
   return (
     <Card>
     <li>
@@ -16,7 +38,7 @@ function Post(props) {
         </div>
 
         <div className={classes.actions}>
-            <button>Add to Favorite</button>
+            <button onClick={favoriteHandeler}>{favorite ? 'Remove from' : 'Add to Favorite'}</button>
         </div>
     </article>
     </li>
